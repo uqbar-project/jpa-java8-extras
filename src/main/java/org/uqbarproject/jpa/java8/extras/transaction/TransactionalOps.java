@@ -1,10 +1,10 @@
-package org.uqbarproject.hibernate.jpa.extras.transaction;
+package org.uqbarproject.jpa.java8.extras.transaction;
 
 import java.util.function.Supplier;
 
 import javax.persistence.EntityTransaction;
 
-import org.uqbarproject.hibernate.jpa.extras.WithEntityManager;
+import org.uqbarproject.jpa.java8.extras.WithEntityManager;
 
 public interface TransactionalOps extends WithEntityManager {
 

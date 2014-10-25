@@ -8,10 +8,10 @@
 	</parent>
 	
 	<groupId>org.uqbar-project</groupId>
-	<artifactId>hibernate-entitymanager-extras</artifactId>
+	<artifactId>jpa-java8-extras</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>Hibernate EntityManager Extras</name>
-	<description>Extras for JPA/Hibernate</description>
+	<name>JPA/Hibernate Java 8 Extras</name>
+	<description>Better Integration of JPA/Hibernate 2.1 and Java 8</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

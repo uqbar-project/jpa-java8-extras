@@ -1,4 +1,4 @@
-package org.uqbarproject.hibernate.jpa.extras.export;
+package org.uqbarproject.jpa.java8.extras.export;
 
 import java.util.HashMap;
 

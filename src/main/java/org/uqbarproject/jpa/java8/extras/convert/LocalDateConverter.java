@@ -1,4 +1,4 @@
-package org.uqbarproject.hibernate.jpa.extras.convert;
+package org.uqbarproject.jpa.java8.extras.convert;
 
 import java.sql.Date;
 import java.time.LocalDate;

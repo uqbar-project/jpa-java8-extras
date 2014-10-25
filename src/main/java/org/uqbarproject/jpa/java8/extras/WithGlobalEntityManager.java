@@ -1,4 +1,4 @@
-package org.uqbarproject.hibernate.jpa.extras;
+package org.uqbarproject.jpa.java8.extras;
 
 import javax.persistence.EntityManager;
 
