@@ -1,4 +1,4 @@
-JPA EntityManager Extras
+JPA/Hibernate Java 8  Extras
 ==============================
 
 This is a small library that improves support of Java 8 language features to JPA/Hibernate. It adds:
