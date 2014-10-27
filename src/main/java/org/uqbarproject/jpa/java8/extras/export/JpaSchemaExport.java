@@ -8,6 +8,8 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
+ * Tool for exporting JPA schema. This class depends on Hibernate classes.
+ * 
  * Run with args: <code>db schema.sql true true</code>
  */
 public class JpaSchemaExport {
