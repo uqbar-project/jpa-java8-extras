@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.uqbar-project</groupId>
@@ -9,7 +8,7 @@
 	
 	<groupId>org.uqbar-project</groupId>
 	<artifactId>jpa-java8-extras</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0-alpha-1</version>
 	<name>JPA/Hibernate Java 8 Extras</name>
 	<description>Better Integration of JPA/Hibernate 2.1 and Java 8</description>
 
@@ -76,4 +75,8 @@
 			</plugin>
 		</plugins>
 	</build>
+
+  <scm>
+    <tag>1.0-alpha-1</tag>
+  </scm>
 </project>
