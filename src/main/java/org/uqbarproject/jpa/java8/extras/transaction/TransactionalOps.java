@@ -27,23 +27,29 @@ public interface TransactionalOps extends WithEntityManager {
       }
    }
 
-   default void beginTransaction() {
-      EntityTransaction tx = entityManager().getTransaction();
+   default EntityTransaction getTransaction() {
+      return entityManager().getTransaction();
+   }
+
+   default EntityTransaction beginTransaction() {
+      EntityTransaction tx = getTransaction();
 
       if (!tx.isActive()) {
          tx.begin();
       }
+
+      return tx;
    }
 
    default void commitTransaction() {
-      EntityTransaction tx = entityManager().getTransaction();
+      EntityTransaction tx = getTransaction();
       if (tx.isActive()) {
          tx.commit();
       }
    }
 
    default void rollbackTransaction() {
-      EntityTransaction tx = entityManager().getTransaction();
+      EntityTransaction tx = getTransaction();
       if (tx.isActive()) {
          tx.rollback();
       }
