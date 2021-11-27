@@ -6,16 +6,16 @@ import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
 import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 
 public abstract class AbstractPersistenceTest implements
-		TransactionalOps, EntityManagerOps {
+        TransactionalOps, EntityManagerOps {
 
-	@BeforeEach
-	public void setup() {
-		beginTransaction();
-	}
+  @BeforeEach
+  public void setup() {
+    beginTransaction();
+  }
 
-	@AfterEach
-	public void tearDown() {
-		rollbackTransaction();
-	}
+  @AfterEach
+  public void tearDown() {
+    rollbackTransaction();
+  }
 
 }
