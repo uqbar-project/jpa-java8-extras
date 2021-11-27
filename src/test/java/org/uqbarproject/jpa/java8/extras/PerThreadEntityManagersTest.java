@@ -10,17 +10,17 @@ import org.junit.jupiter.api.Test;
 public class PerThreadEntityManagersTest {
 
   @BeforeEach
-  public void closeEntitityManager() {
+  public void closeEntityManager() {
     PerThreadEntityManagers.dispose();
   }
 
   @Test
-  public void entitiyManagerIsNotInitiallyAttached() {
+  public void entityManagerIsNotInitiallyAttached() {
     assertFalse(PerThreadEntityManagers.isAttached());
   }
   
   @Test
-  public void entitiyManagerIsAttachedOnDemand() {
+  public void entityManagerIsAttachedOnDemand() {
     assertNotNull(PerThreadEntityManagers.get());
     assertTrue(PerThreadEntityManagers.isAttached());
   }
