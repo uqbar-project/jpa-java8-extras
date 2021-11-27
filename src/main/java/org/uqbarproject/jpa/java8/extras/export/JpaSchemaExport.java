@@ -23,13 +23,12 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 public class JpaSchemaExport {
 
   public static void main(String[] args) throws Exception {
-    boolean create = args.length >= 3 ? Boolean.parseBoolean(args[2]) : true;
-    boolean format = args.length == 4 ? Boolean.parseBoolean(args[3]) : true;
+    boolean create = args.length < 3 || Boolean.parseBoolean(args[2]);
+    boolean format = args.length != 4 || Boolean.parseBoolean(args[3]);
     execute(args[0], args[1], create, format);
   }
 
-  public static void execute(String unused, String destination, boolean create, boolean format)
-          throws Exception {
+  public static void execute(String unused, String destination, boolean create, boolean format) {
     System.out.println("Starting schema export");
 
     new HibernatePersistenceProvider() {
