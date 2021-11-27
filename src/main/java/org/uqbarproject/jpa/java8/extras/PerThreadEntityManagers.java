@@ -34,14 +34,6 @@ public class PerThreadEntityManagers {
     if (emf == null) {
       throw new IllegalStateException("Can not get an entity manager after shutdown");
     }
-    return getEntityManager();
-  }
-
-  /**
-   * @deprecated use {@link #get()} instead
-   */
-  @Deprecated
-  public static EntityManager getEntityManager() {
     EntityManager manager = threadLocal.get();
     if (manager == null || !manager.isOpen()) {
       manager = emf.createEntityManager();
@@ -59,24 +51,14 @@ public class PerThreadEntityManagers {
   }
 
   /**
-   * @deprecated use {@link #dispose()}
-   */
-  @Deprecated
-  public static void closeEntityManager() {
-    EntityManager em = threadLocal.get();
-    threadLocal.set(null);
-    em.close();
-  }
-
-  /**
    * Closes and dereferences the currently attached entity
    * manager, if any
    */
   public static void dispose() {
     EntityManager em = threadLocal.get();
-    threadLocal.set(null);
     if (em != null) {
       em.close();
+      threadLocal.set(null);
     }
   }
 
