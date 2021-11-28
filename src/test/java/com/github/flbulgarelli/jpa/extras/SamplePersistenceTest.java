@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import org.junit.jupiter.api.Test;
 import com.github.flbulgarelli.jpa.extras.test.AbstractPersistenceTest;
 
-public class PersistenceTest extends AbstractPersistenceTest implements WithGlobalEntityManager {
+public class SamplePersistenceTest extends AbstractPersistenceTest implements WithSimplePersistenceUnit {
   @Test
   void persistableIsInserted() {
     Persistable persistable = new Persistable();

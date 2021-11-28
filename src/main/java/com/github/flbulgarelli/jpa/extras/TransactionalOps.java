@@ -1,4 +1,4 @@
-package com.github.flbulgarelli.jpa.extras.transaction;
+package com.github.flbulgarelli.jpa.extras;
 
 import java.util.function.Supplier;
 

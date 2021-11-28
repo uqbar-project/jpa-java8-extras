@@ -14,26 +14,26 @@ import org.hibernate.tool.schema.TargetType;
 
 /**
  * Tool for exporting JPA schema. This class depends on Hibernate classes
- * Run it as <code>JpaSchemaExport SCHEMA_FILE [format]</code>.
+ * Run it as <code>JpaSchemaExport PERSISTENCE_UNIT_NAME SCHEMA_FILE [format]</code>.
  */
 public class JpaSchemaExport {
 
   public static void main(String[] args) throws Exception {
-    if (args.length == 0 || args.length > 2) {
+    if (args.length < 2 || args.length > 3) {
       System.err.println("Invalid arguments. Sample usage:\n");
-      System.err.println("    JpaSchemaExport schema.sql");
-      System.err.println("    JpaSchemaExport schema.sql true");
+      System.err.println("    JpaSchemaExport simple-persistence-unit schema.sql");
+      System.err.println("    JpaSchemaExport simple-persistence-unit schema.sql true");
       System.exit(1);
     }
-    execute(args[0], args.length == 2 && Boolean.parseBoolean(args[1]));
+    execute(args[0], args[1], args.length == 3 && Boolean.parseBoolean(args[2]));
   }
 
-  public static void execute(String destination, boolean format) {
+  public static void execute(String persistenceUnitName, String destination, boolean format) {
     System.out.println("Starting schema export");
     new HibernatePersistenceProvider() {
       {
         EntityManagerFactoryBuilderImpl emfb = (EntityManagerFactoryBuilderImpl) this
-                .getEntityManagerFactoryBuilderOrNull("db", new HashMap<>());
+                .getEntityManagerFactoryBuilderOrNull(persistenceUnitName, new HashMap<>());
         emfb.generateSchema();
 
         SchemaExport schemaExport = new SchemaExport();
