@@ -1,45 +1,49 @@
 package org.uqbarproject.jpa.java8.extras.export;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
 
 /**
  * Tool for exporting JPA schema. This class depends on Hibernate classes
- * Run it as <code>DB_NAME SCHEMA_FILE [CREATE] [FORAMAT]</code>.
- * <p>
- * Examples:
- *
- * <code>
- * <pre>
- * db schema.sql
- * db schema.sql true true
- * </pre>
- * </code>
+ * Run it as <code>JpaSchemaExport SCHEMA_FILE [format]</code>.
  */
 public class JpaSchemaExport {
 
   public static void main(String[] args) throws Exception {
-    boolean create = args.length < 3 || Boolean.parseBoolean(args[2]);
-    boolean format = args.length != 4 || Boolean.parseBoolean(args[3]);
-    execute(args[0], args[1], create, format);
+    if (args.length == 0 || args.length > 2) {
+      System.err.println("Invalid arguments. Sample usage:\n");
+      System.err.println("    JpaSchemaExport schema.sql");
+      System.err.println("    JpaSchemaExport schema.sql true");
+      System.exit(1);
+    }
+    execute(args[0], args.length == 2 && Boolean.parseBoolean(args[1]));
   }
 
-  public static void execute(String unused, String destination, boolean create, boolean format) {
+  public static void execute(String destination, boolean format) {
     System.out.println("Starting schema export");
-
     new HibernatePersistenceProvider() {
       {
         EntityManagerFactoryBuilderImpl emfb = (EntityManagerFactoryBuilderImpl) this
-                .getEntityManagerFactoryBuilderOrNull(unused, new HashMap<>());
-        Configuration hbmcfg = emfb.buildHibernateConfiguration(emfb.buildServiceRegistry());
-        SchemaExport schemaExport = new SchemaExport(hbmcfg);
+                .getEntityManagerFactoryBuilderOrNull("db", new HashMap<>());
+        emfb.generateSchema();
+
+        SchemaExport schemaExport = new SchemaExport();
         schemaExport.setOutputFile(destination);
         schemaExport.setFormat(format);
-        schemaExport.execute(true, false, false, create);
+
+        schemaExport.createOnly(
+                EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT),
+                emfb.getMetadata());
+
         System.out.println("Schema exported to " + destination);
       }
     };
