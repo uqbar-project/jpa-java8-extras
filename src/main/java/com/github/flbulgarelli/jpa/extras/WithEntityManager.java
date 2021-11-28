@@ -1,4 +1,4 @@
-package org.uqbarproject.jpa.java8.extras;
+package com.github.flbulgarelli.jpa.extras;
 
 
 import javax.persistence.EntityManager;

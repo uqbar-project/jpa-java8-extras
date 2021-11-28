@@ -1,4 +1,4 @@
-package org.uqbarproject.jpa.java8.extras.convert;
+package com.github.flbulgarelli.jpa.extras.convert;
 
 import java.sql.Date;
 import java.time.LocalDate;

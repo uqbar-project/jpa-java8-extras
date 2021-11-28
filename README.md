@@ -10,7 +10,7 @@ This is a small library that improves support of Java 8 language features to JPA
   
 ## Schema Generation
 
-JPA does not provide an easy way to generate the SQL schema. With this library, you can generate it by executing `org.uqbarproject.jpa.java8.extras.export.JpaSchemaExport`. For example, run it with the following arguments
+JPA does not provide an easy way to generate the SQL schema. With this library, you can generate it by executing `JpaSchemaExport`. For example, run it with the following arguments
 
 ```
 db schema.sql true true

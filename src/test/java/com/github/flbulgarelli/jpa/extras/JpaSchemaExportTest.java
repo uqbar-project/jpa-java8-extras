@@ -1,9 +1,8 @@
-package org.uqbarproject.jpa.java8.extras;
+package com.github.flbulgarelli.jpa.extras;
 
 import org.junit.jupiter.api.Test;
-import org.uqbarproject.jpa.java8.extras.export.JpaSchemaExport;
+import com.github.flbulgarelli.jpa.extras.export.JpaSchemaExport;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 

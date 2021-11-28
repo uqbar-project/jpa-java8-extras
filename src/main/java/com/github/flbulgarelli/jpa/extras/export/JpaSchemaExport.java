@@ -1,4 +1,4 @@
-package org.uqbarproject.jpa.java8.extras.export;
+package com.github.flbulgarelli.jpa.extras.export;
 
 import java.util.EnumSet;
 import java.util.HashMap;

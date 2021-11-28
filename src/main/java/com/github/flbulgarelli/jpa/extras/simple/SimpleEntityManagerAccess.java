@@ -1,9 +1,9 @@
-package org.uqbarproject.jpa.java8.extras.simple;
+package com.github.flbulgarelli.jpa.extras.simple;
 
-import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
-import org.uqbarproject.jpa.java8.extras.PerThreadEntityManagers;
-import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
-import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
+import com.github.flbulgarelli.jpa.extras.EntityManagerOps;
+import com.github.flbulgarelli.jpa.extras.PerThreadEntityManagers;
+import com.github.flbulgarelli.jpa.extras.transaction.TransactionalOps;
+import com.github.flbulgarelli.jpa.extras.WithGlobalEntityManager;
 
 public interface SimpleEntityManagerAccess extends WithGlobalEntityManager, EntityManagerOps, TransactionalOps {
 

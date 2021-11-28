@@ -1,4 +1,4 @@
-package org.uqbarproject.jpa.java8.extras;
+package com.github.flbulgarelli.jpa.extras;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.junit.jupiter.api.Test;
-import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest;
+import com.github.flbulgarelli.jpa.extras.test.AbstractPersistenceTest;
 
 public class PersistenceTest extends AbstractPersistenceTest implements WithGlobalEntityManager {
   @Test

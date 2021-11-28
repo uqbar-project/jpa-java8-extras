@@ -1,9 +1,9 @@
-package org.uqbarproject.jpa.java8.extras.test;
+package com.github.flbulgarelli.jpa.extras.test;
 
+import com.github.flbulgarelli.jpa.extras.EntityManagerOps;
+import com.github.flbulgarelli.jpa.extras.transaction.TransactionalOps;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.uqbarproject.jpa.java8.extras.EntityManagerOps;
-import org.uqbarproject.jpa.java8.extras.transaction.TransactionalOps;
 
 public abstract class AbstractPersistenceTest implements
         TransactionalOps, EntityManagerOps {

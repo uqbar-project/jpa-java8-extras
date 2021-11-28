@@ -1,10 +1,10 @@
-package org.uqbarproject.jpa.java8.extras.transaction;
+package com.github.flbulgarelli.jpa.extras.transaction;
 
 import java.util.function.Supplier;
 
 import javax.persistence.EntityTransaction;
 
-import org.uqbarproject.jpa.java8.extras.WithEntityManager;
+import com.github.flbulgarelli.jpa.extras.WithEntityManager;
 
 /**
  * @author flbulgarelli
