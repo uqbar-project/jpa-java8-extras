@@ -3,6 +3,7 @@ package org.uqbarproject.jpa.java8.extras;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.Optional;
 
 /**
  * Mixin for adding simple access to common CRUD {@link EntityManager} operations.
@@ -23,8 +24,8 @@ public interface EntityManagerOps extends WithEntityManager {
 	/**
 	 * @see EntityManager#merge(Object)
 	 */
-	default <T> T merge(T entity) {
-		return entityManager().merge(entity);
+	default <T> Optional<T> merge(T entity) {
+		return Optional.ofNullable(entityManager().merge(entity));
 	}
 
 	/**
@@ -37,8 +38,8 @@ public interface EntityManagerOps extends WithEntityManager {
 	/**
 	 * @see EntityManager#find(Class, Object)
 	 */
-	default <T> T find(Class<T> entityClass, Object primaryKey) {
-		return entityManager().find(entityClass, primaryKey);
+	default <T> Optional<T> find(Class<T> entityClass, Object primaryKey) {
+		return Optional.ofNullable(entityManager().find(entityClass, primaryKey));
 	}
 
 	/**
