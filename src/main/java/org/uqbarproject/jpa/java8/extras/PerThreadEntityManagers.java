@@ -16,7 +16,8 @@ public class PerThreadEntityManagers {
 
    static {
       try {
-         emf = Persistence.createEntityManagerFactory("db");
+         emf = Persistence.createEntityManagerFactory("db",
+             PersistenceUnitProperties.INSTANCE.lock().getProperties());
          threadLocal = new ThreadLocal<>();
       } catch (Exception e) {
          e.printStackTrace();
