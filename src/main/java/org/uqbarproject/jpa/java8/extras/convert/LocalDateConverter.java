@@ -11,11 +11,11 @@ public class LocalDateConverter implements AttributeConverter<LocalDate, Date> {
 
 	@Override
 	public Date convertToDatabaseColumn(LocalDate date) {
-		return Date.valueOf(date);
+		return date == null ? null : Date.valueOf(date);
 	}
 
 	@Override
 	public LocalDate convertToEntityAttribute(Date date) {
-		return date.toLocalDate();
+		return date == null ? null : date.toLocalDate();
 	}
 }
