@@ -10,9 +10,9 @@ import javax.persistence.Table;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import org.junit.jupiter.api.Test;
-import com.github.flbulgarelli.jpa.extras.test.AbstractPersistenceTest;
+import com.github.flbulgarelli.jpa.extras.test.PersistenceTest;
 
-public class SamplePersistenceTest extends AbstractPersistenceTest implements WithSimplePersistenceUnit {
+public class SamplePersistenceTest implements PersistenceTest, WithSimplePersistenceUnit {
   @Test
   void persistableIsInserted() {
     Persistable persistable = new Persistable();
