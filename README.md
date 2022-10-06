@@ -10,12 +10,6 @@ This is a small library that simplifies usage of JPA/Hibernate. It adds:
   
 ## Schema Generation
 
-JPA does not provide an easy way to generate the SQL schema. With this library, you can generate it by executing `JpaSchemaExport`. For example, run it with the following arguments
+JPA does not provide an easy way to generate the SQL schema. With this library, you can generate it by executing `JpaSchemaExport`.
 
-```
-# JpaSchemaExport DATABASE_UNIT SCHEMA_FILE [format]
-JpaSchemaExport db schema.sql
-JpaSchemaExport db schema.sql true
-```
-
-And you will get a file `schema.sql` with the schema for the `db`  persistence unit
+By default, you will get a file `schema.sql` with the schema for the `simple-persistent-unit`  persistence unit. Run it with `--help` flag to see all available options.
