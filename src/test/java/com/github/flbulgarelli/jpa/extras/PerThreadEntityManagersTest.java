@@ -22,6 +22,10 @@ public class PerThreadEntityManagersTest {
   public void entityManagerCanBeConfiguredBeforeInitialization() {
     assertDoesNotThrow(
         () -> access.setProperty("hibernate.connection.url", "jdbc:h2:mem:test"));
+    assertDoesNotThrow(
+        () -> access.setProperties(System.getenv()));
+    assertDoesNotThrow(
+        () -> access.loadProperties("src/test/resources/test.properties"));
   }
 
   @Test
