@@ -2,6 +2,7 @@ package com.github.flbulgarelli.jpa.extras;
 
 import javax.persistence.EntityManager;
 
+import static com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit.PER_THREAD_ENTITY_MANAGER_ACCESS;
 import static com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit.SIMPLE_PERSISTENCE_UNIT_NAME;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,57 +12,49 @@ import org.junit.jupiter.api.Test;
 
 public class PerThreadEntityManagersTest {
 
-  private PerThreadEntityManagerAccess access;
+  private PerThreadEntityManagerAccess access = PER_THREAD_ENTITY_MANAGER_ACCESS;
 
   @BeforeEach
   public void disposeEntityManager() {
-    access = new PerThreadEntityManagerAccess(SIMPLE_PERSISTENCE_UNIT_NAME);
-  }
-
-  @Test
-  public void entityManagerCanBeConfiguredBeforeInitialization() {
-    assertDoesNotThrow(
-        () -> access.setProperty("hibernate.connection.url", "jdbc:h2:mem:test"));
-    assertDoesNotThrow(
-        () -> access.setProperties(System.getenv()));
-    assertDoesNotThrow(
-        () -> access.loadProperties("src/test/resources/test.properties"));
-  }
-
-  @Test
-  public void entityManagerCannotBeConfiguredAfterInitialization() {
     access.dispose();
+  }
 
+  @Test
+  public void entityManagerCanBeConfiguredBeforeDispose() {
+    var anotherAccess = new PerThreadEntityManagerAccess(SIMPLE_PERSISTENCE_UNIT_NAME);
+
+    assertDoesNotThrow(
+        () -> anotherAccess.setProperty("hibernate.connection.url", "jdbc:h2:mem:test"));
+    assertDoesNotThrow(
+        () -> anotherAccess.setProperties(System.getenv()));
+    assertDoesNotThrow(
+        () -> anotherAccess.loadProperties("src/test/resources/test.properties"));
+  }
+
+  @Test
+  public void entityManagerCannotBeConfiguredAfterDispose() {
     assertThrows(IllegalStateException.class,
         () -> access.setProperty("hibernate.connection.url", "jdbc:h2:mem:test"));
   }
 
   @Test
   public void entityManagerIsNotInitiallyAttached() {
-    access.dispose();
-
     assertFalse(access.isAttached());
   }
   
   @Test
   public void entityManagerIsAttachedOnDemand() {
-    access.dispose();
-
     assertNotNull(access.get());
     assertTrue(access.isAttached());
   }
   
   @Test
   public void theSameEntityManagerIsConsistentlyReturned() {
-    access.dispose();
-
     assertSame(access.get(), access.get());
   }
   
   @Test
   public void aDifferentEntityManagerIsReturnedIfDisposed() {
-    access.dispose();
-
     EntityManager e1 = access.get();
     
     access.dispose();
@@ -71,8 +64,6 @@ public class PerThreadEntityManagersTest {
   
   @Test
   public void aDifferentEntityManagerIsReturnedIfExternallyClosed() {
-    access.dispose();
-
     EntityManager e1 = access.get();
     
     e1.close();
