@@ -23,18 +23,17 @@ public class PerThreadEntityManagersTest {
   public void entityManagerCanBeConfiguredBeforeDispose() {
     var anotherAccess = new PerThreadEntityManagerAccess(SIMPLE_PERSISTENCE_UNIT_NAME);
 
-    assertDoesNotThrow(
-        () -> anotherAccess.setProperty("hibernate.connection.url", "jdbc:h2:mem:test"));
-    assertDoesNotThrow(
-        () -> anotherAccess.setProperties(System.getenv()));
-    assertDoesNotThrow(
-        () -> anotherAccess.loadProperties("src/test/resources/test.properties"));
+    assertDoesNotThrow(() ->
+      anotherAccess.configure(properties -> properties
+          .set("hibernate.connection.url", "jdbc:h2:mem:test")
+          .putAll(System.getenv())
+          .load("src/test/resources/test.properties"))
+    );
   }
 
   @Test
   public void entityManagerCannotBeConfiguredAfterDispose() {
-    assertThrows(IllegalStateException.class,
-        () -> access.setProperty("hibernate.connection.url", "jdbc:h2:mem:test"));
+    assertThrows(IllegalStateException.class, () -> access.configure(p -> {}));
   }
 
   @Test

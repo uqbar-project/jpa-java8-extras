@@ -1,10 +1,6 @@
 package com.github.flbulgarelli.jpa.extras.perthread;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Properties;
+import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -22,12 +18,12 @@ public class PerThreadEntityManagerAccess {
 
   private final ThreadLocal<EntityManager> threadLocal;
 
-  private final Properties properties;
+  private final PerThreadEntityManagerProperties properties;
 
   public PerThreadEntityManagerAccess(String persistenceUnitName) {
     this.persistenceUnitName = persistenceUnitName;
     this.threadLocal = new ThreadLocal<>();
-    this.properties = new Properties();
+    this.properties = new PerThreadEntityManagerProperties();
   }
 
   private void ensureNotInitialized() {
@@ -39,41 +35,14 @@ public class PerThreadEntityManagerAccess {
   }
 
   /**
-   * Sets a property before the entity manager factory is created.
+   * Exposes the properties that will be used to create the entity manager factory.
    *
-   * @param key the property key
-   * @param value the property value
+   * @param propertiesConsumer a consumer that will be called with the properties object
    * @throws IllegalStateException if the entity manager factory has already been created
    */
-  public PerThreadEntityManagerAccess setProperty(String key, String value) {
+  public void configure(Consumer<PerThreadEntityManagerProperties> propertiesConsumer) {
     ensureNotInitialized();
-    this.properties.setProperty(key, value);
-    return this;
-  }
-
-  /**
-   * Sets a map of properties to be used when creating the entity manager factory.
-   *
-   * @param properties the properties to set
-   * @throws IllegalStateException if the entity manager factory has already been created
-   */
-  public <K, V> PerThreadEntityManagerAccess setProperties(Map<K, V> properties) {
-    ensureNotInitialized();
-    this.properties.putAll(properties);
-    return this;
-  }
-
-  /**
-   * Loads properties from a file and sets them before the entity manager factory is created.
-   *
-   * @param path the path to the properties file
-   * @throws IllegalStateException if the entity manager factory has already been created
-   * @throws IOException if the file can not be read
-   */
-  public PerThreadEntityManagerAccess loadProperties(String path) throws IOException {
-    ensureNotInitialized();
-    this.properties.load(Files.newInputStream(Paths.get(path)));
-    return this;
+    propertiesConsumer.accept(properties);
   }
 
   private EntityManagerFactory getEmf() {
@@ -81,7 +50,7 @@ public class PerThreadEntityManagerAccess {
       synchronized (this) {
         if (emf == null) {
           emf = Persistence.createEntityManagerFactory(
-              persistenceUnitName, properties);
+              persistenceUnitName, properties.get());
         }
       }
     }
