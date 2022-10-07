@@ -1,6 +1,5 @@
 package com.github.flbulgarelli.jpa.extras;
 
-import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import org.junit.jupiter.api.Test;
 import com.github.flbulgarelli.jpa.extras.export.JpaSchemaExport;
 
@@ -18,7 +17,7 @@ class JpaSchemaExportTest {
     JpaSchemaExport.execute(SIMPLE_PERSISTENCE_UNIT_NAME, schema.toString(), false);
     assertEquals(
             "create sequence hibernate_sequence start with 1 increment by 1;\n" +
-                    "create table Persistables (id bigint not null, aString varchar(255), primary key (id));\n",
+                    "create table Persistables (id bigint not null, aDate date, aString varchar(255), primary key (id));\n",
             Files.readString(schema));
   }
 
@@ -30,6 +29,7 @@ class JpaSchemaExportTest {
                     "\n" +
                     "    create table Persistables (\n" +
                     "       id bigint not null,\n" +
+                    "        aDate date,\n" +
                     "        aString varchar(255),\n" +
                     "        primary key (id)\n" +
                     "    );\n",
