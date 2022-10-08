@@ -24,7 +24,6 @@ If you are using IntelliJ, you can add a Run Configuration with the following pa
 
 - Main class: `com.github.flbulgarelli.jpa.extras.export.JpaSchemaExport`
 - Program arguments: `-o schema.sql -f`
-- `Modify Options` -> `Add provided dependencies with "provided" scope to classpath`
+- `Modify Options` -> `Add Run Options`-> `Java` -> `Add provided dependencies with "provided" scope to classpath`
 
-![image](https://user-images.githubusercontent.com/39303639/194596287-bc56c4f5-eda9-43f5-a28b-24791c1d4879.png)
-![image](https://user-images.githubusercontent.com/39303639/194596129-17b5377e-e7c3-4c6e-9fbf-21d360908ead.png)
+![run/debug configuration](https://user-images.githubusercontent.com/39303639/194677296-86d6395e-5f42-4500-962a-677ad28d613b.png)
