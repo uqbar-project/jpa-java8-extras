@@ -4,10 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import org.junit.jupiter.api.Test;
-import com.github.flbulgarelli.jpa.extras.test.AbstractPersistenceTest;
+import com.github.flbulgarelli.jpa.extras.test.PersistenceTest;
 
-public class AbstractPersistenceTestTest extends AbstractPersistenceTest
-    implements WithSimplePersistenceUnit {
+public class PersistenceTestTest implements PersistenceTest, WithSimplePersistenceUnit {
 
   @Test
   public void transactionIsActive() {
