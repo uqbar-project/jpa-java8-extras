@@ -87,7 +87,7 @@ public class PerThreadEntityManagerAccess {
     ensureActive();
     EntityManager manager = threadLocal.get();
     if (manager == null || !manager.isOpen()) {
-      manager = emf.createEntityManager();
+      manager = getEmf().createEntityManager();
       threadLocal.set(manager);
     }
     return manager;
