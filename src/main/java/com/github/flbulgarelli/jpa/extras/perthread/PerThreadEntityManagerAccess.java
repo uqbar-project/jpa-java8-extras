@@ -1,5 +1,6 @@
 package com.github.flbulgarelli.jpa.extras.perthread;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,9 +13,9 @@ import javax.persistence.Persistence;
  */
 public class PerThreadEntityManagerAccess {
 
-  private volatile EntityManagerFactory emf;
-
   private final String persistenceUnitName;
+
+  private final ConcurrentHashMap<String, EntityManagerFactory> emfHolder;
 
   private final ThreadLocal<EntityManager> threadLocal;
 
@@ -22,15 +23,14 @@ public class PerThreadEntityManagerAccess {
 
   public PerThreadEntityManagerAccess(String persistenceUnitName) {
     this.persistenceUnitName = persistenceUnitName;
+    this.emfHolder = new ConcurrentHashMap<>(1);
     this.threadLocal = new ThreadLocal<>();
     this.properties = new PerThreadEntityManagerProperties();
   }
 
   private void ensureNotInitialized() {
-    synchronized (this) {
-      if (emf != null) {
-        throw new IllegalStateException("Can not set properties after initialization");
-      }
+    if (emfHolder.containsKey(persistenceUnitName)) {
+      throw new IllegalStateException("Can not set properties after initialization");
     }
   }
 
@@ -46,15 +46,8 @@ public class PerThreadEntityManagerAccess {
   }
 
   private EntityManagerFactory getEmf() {
-    if (emf == null) {
-      synchronized (this) {
-        if (emf == null) {
-          emf = Persistence.createEntityManagerFactory(
-              persistenceUnitName, properties.get());
-        }
-      }
-    }
-    return emf;
+    return emfHolder.computeIfAbsent(persistenceUnitName,
+            (name) -> Persistence.createEntityManagerFactory(name, properties.get()));
   }
 
   /**
