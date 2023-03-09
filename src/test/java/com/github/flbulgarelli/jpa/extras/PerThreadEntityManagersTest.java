@@ -3,6 +3,7 @@ package com.github.flbulgarelli.jpa.extras;
 import javax.persistence.EntityManager;
 
 import static com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit.PER_THREAD_ENTITY_MANAGER_ACCESS;
+import static com.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit.SIMPLE_PERSISTENCE_UNIT_NAME;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.flbulgarelli.jpa.extras.perthread.PerThreadEntityManagerAccess;
@@ -16,6 +17,23 @@ public class PerThreadEntityManagersTest {
   @BeforeEach
   public void disposeEntityManager() {
     access.dispose();
+  }
+
+  @Test
+  public void entityManagerCanBeConfiguredBeforeDispose() {
+    var anotherAccess = new PerThreadEntityManagerAccess(SIMPLE_PERSISTENCE_UNIT_NAME);
+
+    assertDoesNotThrow(() ->
+      anotherAccess.configure(properties -> properties
+          .set("hibernate.connection.url", "jdbc:h2:mem:test")
+          .putAll(System.getenv())
+          .load("src/test/resources/test.properties"))
+    );
+  }
+
+  @Test
+  public void entityManagerCannotBeConfiguredAfterDispose() {
+    assertThrows(IllegalStateException.class, () -> access.configure(p -> {}));
   }
 
   @Test

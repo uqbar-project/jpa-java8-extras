@@ -3,7 +3,9 @@ package com.github.flbulgarelli.jpa.extras.simple;
 import com.github.flbulgarelli.jpa.extras.EntityManagerOps;
 import com.github.flbulgarelli.jpa.extras.TransactionalOps;
 import com.github.flbulgarelli.jpa.extras.perthread.PerThreadEntityManagerAccess;
+import com.github.flbulgarelli.jpa.extras.perthread.PerThreadEntityManagerProperties;
 import com.github.flbulgarelli.jpa.extras.perthread.WithPerThreadEntityManager;
+import java.util.function.Consumer;
 
 /**
  * This mixin-style interface allows implementors
@@ -18,6 +20,16 @@ public interface WithSimplePersistenceUnit extends WithPerThreadEntityManager, E
   @Override
   default PerThreadEntityManagerAccess perThreadEntityManagerAccess() {
     return PER_THREAD_ENTITY_MANAGER_ACCESS;
+  }
+
+  /**
+   * Exposes the properties that will be used to create the entity manager factory.
+   *
+   * @param propertiesConsumer a consumer that will be called with the properties object
+   * @throws IllegalStateException if the entity manager factory has already been created
+   */
+  static void configure(Consumer<PerThreadEntityManagerProperties> propertiesConsumer) {
+    PER_THREAD_ENTITY_MANAGER_ACCESS.configure(propertiesConsumer);
   }
 
   /**

@@ -1,6 +1,7 @@
 package com.github.flbulgarelli.jpa.extras.perthread;
 
-
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -8,34 +9,63 @@ import javax.persistence.Persistence;
 /**
  * @author gprieto
  * @author flbulgarelli
+ * @author raniagus
  */
 public class PerThreadEntityManagerAccess {
 
-  private EntityManagerFactory emf;
+  private final String persistenceUnitName;
 
-  private ThreadLocal<EntityManager> threadLocal;
+  private final ConcurrentHashMap<String, EntityManagerFactory> emfHolder;
+
+  private final ThreadLocal<EntityManager> threadLocal;
+
+  private final PerThreadEntityManagerProperties properties;
 
   public PerThreadEntityManagerAccess(String persistenceUnitName) {
-    emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-    threadLocal = new ThreadLocal<>();
+    this.persistenceUnitName = persistenceUnitName;
+    this.emfHolder = new ConcurrentHashMap<>(1);
+    this.threadLocal = new ThreadLocal<>();
+    this.properties = new PerThreadEntityManagerProperties();
+  }
+
+  private void ensureNotInitialized() {
+    if (emfHolder.containsKey(persistenceUnitName)) {
+      throw new IllegalStateException("Can not set properties after initialization");
+    }
+  }
+
+  /**
+   * Exposes the properties that will be used to create the entity manager factory.
+   *
+   * @param propertiesConsumer a consumer that will be called with the properties object
+   * @throws IllegalStateException if the entity manager factory has already been created
+   */
+  public void configure(Consumer<PerThreadEntityManagerProperties> propertiesConsumer) {
+    ensureNotInitialized();
+    propertiesConsumer.accept(properties);
+  }
+
+  private EntityManagerFactory getEmf() {
+    return emfHolder.computeIfAbsent(persistenceUnitName,
+            (name) -> Persistence.createEntityManagerFactory(name, properties.get()));
   }
 
   /**
    * Shutdowns this access, preventing new entity managers to be produced
    */
   public void shutdown() {
-    emf.close();
+    getEmf().close();
   }
 
   /**
    * @return whether {@link #shutdown()} has been called yet
    */
   public boolean isActive() {
-    return emf.isOpen();
+    return getEmf().isOpen();
   }
 
   private void ensureActive() {
-    if (!emf.isOpen()) {
+    if (!getEmf().isOpen()) {
       throw new IllegalStateException("Can not get an entity manager before initialize or after shutdown");
     }
   }
@@ -50,7 +80,7 @@ public class PerThreadEntityManagerAccess {
     ensureActive();
     EntityManager manager = threadLocal.get();
     if (manager == null || !manager.isOpen()) {
-      manager = emf.createEntityManager();
+      manager = getEmf().createEntityManager();
       threadLocal.set(manager);
     }
     return manager;
